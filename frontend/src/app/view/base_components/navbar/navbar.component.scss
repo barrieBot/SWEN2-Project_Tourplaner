@@ -1,0 +1,14 @@
+.nav{
+  background-color: white;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  display: grid;
+  grid-template-columns: 10vw auto 10vw;
+  padding-inline: 10px;
+}
+
+.nav p {
+  border: 1px solid gray;
+}
+
