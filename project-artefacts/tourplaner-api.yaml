@@ -8,7 +8,7 @@ servers:
 tags:
   - name: Auth
   - name: Tours
-  - name: Logs
+  - name: logs
   - name: Routes
   - name: Search
 
@@ -80,6 +80,24 @@ paths:
         required: true
         content:
           application/json:
+            schema:
+              $ref: '#/components/schemas/TourInput'
+      responses:
+        '201':
+          description: Tour created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tour'
+  /tours/import:
+    post:
+      tags:
+        - Tours
+      summary: Import new tours from file
+      requestBody:
+        required: true
+        content:
+          application/json: #Hier gehört ein excel hin? oder export einfach über JSON?
             schema:
               $ref: '#/components/schemas/TourInput'
       responses:
@@ -313,6 +331,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResults'
+  /search/suggestions:
+    get:
+      tags:
+        - Search
+      summary: Entry point for search requests
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+          description: Suggest search query
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchSuggestions'
+
 components:
   securitySchemes: 
     bearerAuth:
@@ -487,6 +525,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Route'
+    SearchSuggestions:
+      type: object
+      properties:
+        label:
+          type: string
+        query: 
+          type: string
+    Error:
+      type: object
+      properties:
+        timestamp: {type: string, format: date-time}
+        message: {type: string}
+        details: {type: string}
     TransportType:
       type: string
       enum: [BIKE, HIKE, RUN, VACATION, PUBLIX]
