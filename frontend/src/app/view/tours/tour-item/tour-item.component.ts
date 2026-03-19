@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Tour} from '../../../data/models/tour';
 
 @Component({
   selector: 'app-tour-item',
@@ -7,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './tour-item.component.scss'
 })
 export class TourItemComponent {
+  @Input({required: true}) tourID?: string;
+  @Output() selectTour = new EventEmitter<any>();
 
 }

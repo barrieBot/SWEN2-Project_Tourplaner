@@ -1,8 +1,35 @@
 <div class="nav">
+  <div class="nav_wide">
+    <div class="nav_left logo" routerLink='/'>Tourplaner</div>
 
-  <p>App-Name here</p>
+    <div class="nav_center">
+      <app-search-bar *ngIf="isHome" class="wide_screen_search"></app-search-bar>
+    </div>
 
-  <app-search-bar></app-search-bar>
 
-  <p>Login-Button</p>
+    <div class="nav_right">
+
+      <button *ngIf="isHome" class="action mobile_search_toggle">🔍</button>
+
+      <ng-container *ngIf="isHome; else authButtons">
+        <button class="action add_tour"> + </button>
+        <span class="username">
+          hi user
+        </span>
+      </ng-container>
+
+      <ng-template #authButtons>
+        <button [routerLink]="authLink" class="action authButton">
+          {{authLabel}}
+        </button>
+      </ng-template>
+
+    </div>
+
+  </div>
+
+  <div class="nav_second" *ngIf="isHome">
+    <app-search-bar *ngIf="isHome" class="narrow_screen_search"></app-search-bar>
+  </div>
+
 </div>

@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
-import {LoginComponent} from '../../view/auth/login/login.component';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {MapComponent} from '../../view/base_components/map/map.component';
 
 @Component({
   selector: 'app-login-page',
   imports: [
-    LoginComponent
+    RouterOutlet,
+    MapComponent
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'

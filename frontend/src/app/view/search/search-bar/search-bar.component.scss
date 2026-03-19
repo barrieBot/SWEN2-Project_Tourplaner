@@ -1,14 +1,61 @@
 .search_bar{
 
-  border-radius: 5px;
-  border: 1px solid gray;
-  margin-top: 10px;
+  position: relative;
+  width: 100%;
+  margin-top: 5px;
 }
 
 .lookup_field{
-  border: 1px solid green;
-  height: 30px;
   display: flex;
-  flex-direction: column;
+  max-width: 600px;
+  margin-inline: auto;
+  height: 30px;
+  flex-direction: row;
   justify-content: center;
+  background-color: #f1f1f1;
 }
+
+.lookup_field input {
+  flex: 1;
+  padding-left: 10px;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.lookup_field button {
+  background: none;
+  border: none;
+  padding-inline: 10px;
+}
+
+.lookup_field button:hover {
+  background: black;
+  color: white;
+}
+
+.lookup_field button:active {
+  background: turquoise;
+  color: black;
+}
+
+
+.search_suggestions {
+  position: absolute;
+  display: flex;
+  margin-top: 10px;
+  width: 100%;
+  align-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  z-index: 20;
+}
+
+.suggestion_list_item {
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+  max-width: 600px;
+  width: 100%;
+}
+

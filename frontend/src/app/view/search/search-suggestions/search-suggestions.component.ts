@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {SearchSuggestion} from '../../../data/models/searchSuggestion';
 
 @Component({
   selector: 'app-search-suggestions',
@@ -7,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './search-suggestions.component.scss'
 })
 export class SearchSuggestionsComponent {
+  @Input({required: true}) suggestion?: SearchSuggestion;
+
 
 }
