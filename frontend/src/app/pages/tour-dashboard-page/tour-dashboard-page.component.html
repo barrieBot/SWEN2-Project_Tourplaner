@@ -9,9 +9,11 @@
       <app-tour-list></app-tour-list>
     </aside>
 
-    <section class="tour_view">
-      <app-tour-details></app-tour-details>
-    </section>
+    @if (tours.isTourSelected()){
+      <section class="tour_view">
+        <router-outlet></router-outlet>
+      </section>
+    }
   </div>
 
 </div>

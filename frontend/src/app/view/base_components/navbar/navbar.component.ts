@@ -16,7 +16,7 @@ import {NgIf} from '@angular/common';
 })
 export class NavbarComponent {
 
-  constructor(public router: Router, public authService: AuthServiceService) {}
+  constructor(public router: Router, public auth: AuthServiceService) {}
 
 
   get isHome(): boolean{

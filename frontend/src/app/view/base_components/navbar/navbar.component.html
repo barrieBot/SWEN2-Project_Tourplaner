@@ -14,7 +14,7 @@
       <ng-container *ngIf="isHome; else authButtons">
         <button class="action add_tour"> + </button>
         <span class="username">
-          hi user
+          hi {{auth.loggedInUser()?.username ?? 'user'}}
         </span>
       </ng-container>
 
