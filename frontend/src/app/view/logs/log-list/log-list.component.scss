@@ -1,0 +1,42 @@
+.log_table {
+  width: 100%;
+}
+
+.log_header{
+  border: 1px solid #dddddd;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 12px;
+
+  h3{
+    margin: 4px;
+  }
+}
+
+
+.actions {
+
+  button {
+    border: none;
+    padding-inline: 6px;
+    height: 100%;
+    align-self: 1/1;
+    background: none;
+    font-size: 1rem;
+  }
+
+  button:hover {
+
+  }
+
+  button:active {
+
+  }
+}
+
+
+.log_list {
+
+}

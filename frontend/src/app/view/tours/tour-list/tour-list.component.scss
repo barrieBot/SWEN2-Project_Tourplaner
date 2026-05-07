@@ -7,5 +7,28 @@
 header.tours {
   border-bottom: 2px solid black;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 16px;
+}
 
+
+.header_labels h3{
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+
+.header_labels p{
+  font-size: 0.8rem;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+
+
+.add_button {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 2rem;
 }

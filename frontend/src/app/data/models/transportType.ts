@@ -3,5 +3,5 @@ export enum TransportType{
   HIKE = 'HIKE',
   RUN = 'RUN',
   VACATION = 'VACATION',
-  PUBIX = 'PUBIX',
+  PUBLIX = 'PUBLIX',
 }

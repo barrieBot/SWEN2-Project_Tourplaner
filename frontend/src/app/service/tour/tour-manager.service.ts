@@ -1,18 +1,96 @@
-import {computed, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {Tour, TourUpdate} from '../../data/models/tour';
 import {TransportType} from '../../data/models/transportType';
+import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {filter, tap} from 'rxjs';
+import {SearchManagerService} from '../search/search-manager.service';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TourManagerService {
 
+  private http = inject(HttpClient)
+  private router = inject(Router)
+  private search = inject(SearchManagerService)
+
+  private navigationEnd = toSignal(
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+  )
+
   private tourList = signal<Tour[]>([])
-  selectedTour = signal<Tour | null>(null);
-  isTourSelected = computed(() => !!this.selectedTour);
-  ///private searchResults = signal<Tour[] | null>( null)
+
+  private activeTourID = signal<string | null>(null)
+  isTourSelected = computed(() => !!this.selectedTour());
+  selectedTour = computed(() => {
+    const id = this.activeTourID()
+    if(!id) return null;
+    return id ? this.displayTourList().find(tour => tour.id === id)  : null
+  })
+
+  setSelectedTour = (id: string | null) => {
+    this.activeTourID.set(id)
+  }
+
 
   constructor() { }
+
+  displayTourList = computed(()=>{
+    if (this.tourList().length != 0){
+      return this.tourList();
+    }
+    return this.mockedTours;
+  })
+
+
+  fetchUserTours(){
+    this.http.get<Tour[]>(`/api/tours`).subscribe({
+      next: (tours) => this.tourList.set(tours),
+      error: (error) => { console.error(error); }
+      })
+  }
+
+  postTour(tour:Tour){
+
+    /// Post to /api/tours
+    return this.http.post<Tour>(`/api/tours`, tour).pipe(
+      tap((newTour) => {
+        this.tourList.update(tours => [...tours, newTour])
+      })
+    )
+  }
+
+  deleteTour(tourID: string){
+    /// For now only this
+    this.tourList.update(tours => tours.filter((t) => t.id !== tourID))
+
+    /// Delete to /api/tours/{tourID}
+    this.http.delete(`/api/tours/${tourID}`).subscribe({
+      next: () => {
+        this.tourList.update(tours => tours.filter((t) => t.id !== tourID))
+        this.router.navigate(['/dashboard'])
+      },
+      error: (err) => console.error(err)
+    })
+  }
+
+  getTourById(tourID: string): Tour {
+    return this.tourList().filter(t => t.id === tourID)[0];
+  }
+
+  updateTour(tour_update:TourUpdate){
+    /// Update to /api/tours/{tourID} ?... hmmm
+    this.http.put<Tour>(`/api/tours/${tour_update.id}`, tour_update).pipe(
+      tap((updatedTour) =>  {
+        this.tourList.update(tours => tours.filter(t => t.id !== tour_update.id))
+        this.tourList.update(tours => [...tours, updatedTour])
+      })
+      )
+  }
+
+
 
   private mockedTours: Tour[] = [
     { id: "tour1",
@@ -48,7 +126,7 @@ export class TourManagerService {
     { id: "tour4",
       name: "Arbeitsweg",
       description: "Schnellster Weg in die Arbeit",
-      transportType: TransportType.PUBIX,
+      transportType: TransportType.PUBLIX,
       distance: 18,
       estimatedTime: 45,
       popularity: 1,
@@ -56,39 +134,5 @@ export class TourManagerService {
       logs: []
     },
   ];
-
-  displayTourList = computed(()=>{
-    if (this.tourList().length != 0){
-      return this.tourList();
-    }
-    return this.mockedTours;
-  })
-
-  fetchUserTours(){
-    //// Bind to API /api/tours to retrieve tours on successful login
-
-  }
-
-  postTour(tour:Tour){
-    /// For now only this
-    this.tourList.update(tours => [...tours, tour])
-
-    /// Post to /api/tours
-  }
-
-  deleteTour(tourID: string){
-    /// For now only this
-    this.tourList.update(tours => tours.filter((t) => t.id !== tourID))
-
-    /// Delete to /api/tours/{tourID}
-  }
-
-  getTourById(tourID: string): Tour {
-    return this.tourList().filter(t => t.id === tourID)[0];
-  }
-
-  updateTour(tour_update:TourUpdate){
-    /// Update to /api/tours/{tourID} ?... hmmm
-  }
 
 }

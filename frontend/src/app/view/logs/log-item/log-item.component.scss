@@ -1,0 +1,82 @@
+.log_item{
+  border-bottom: 1px solid #dddddd;
+  display: flex;
+  flex-direction: column;
+
+  &.expanded{
+    z-index: 5;
+    background: white;
+  }
+
+}
+
+.log_shorthand{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #dddddd;
+
+  &:hover{
+    background-color: #dddddd;
+  }
+
+  .meta{
+    display: flex;
+    gap: 16px;
+
+    span{
+      font-size: 1rem;
+    }
+
+    .log_id {
+      font-size: 0.8rem;
+      color: #888888;
+    }
+
+    .unsaved_label{
+      background-color: #3fd5c4;
+      color: #fff;
+    }
+  }
+
+}
+
+.log_details{
+  padding: 10px;
+
+  h3{
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.log_detail .editor{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.log_data_point {
+  display: flex;
+  flex-direction: column;
+
+  input {
+
+  }
+}
+
+
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  button {
+    background: gray;
+    border: none;
+    padding: 5px 15px;
+    font-size: 0.8rem;
+  }
+}

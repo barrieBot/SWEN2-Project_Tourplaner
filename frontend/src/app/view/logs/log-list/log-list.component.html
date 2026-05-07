@@ -1,1 +1,20 @@
-<p>log-list works!</p>
+<div class="log_table">
+  <div class="log_header">
+    <h3>Logs</h3>
+    <div class="actions">
+      <button>+</button>
+      <button>⟲</button>
+    </div>
+  </div>
+
+  <div class="log_list">
+    @for (log of logList(); track log.id){
+      <app-log-item
+        [logID]="log.id"
+        [isExpanded]="openedLogItem() === log.id"
+        (open)="toggleLogDetails(log.id)"
+      />
+    }
+  </div>
+
+</div>

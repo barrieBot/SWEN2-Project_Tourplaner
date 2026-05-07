@@ -1,0 +1,24 @@
+.tour_item_card{
+  border-bottom: 1px solid #ddd;
+}
+
+.tour_header{
+  display: flex;
+  align-items: baseline;
+  padding: 8px;
+}
+
+.tour_header h4{
+  margin: 0;
+  padding-inline: 5px;
+}
+
+.tour_header p{
+  margin: 0;
+  font-size: 0.8rem
+}
+
+.tour_footer{
+  padding-inline: 12px;
+  padding-bottom: 12px;
+}

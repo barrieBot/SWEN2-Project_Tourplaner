@@ -1,6 +1,8 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import { User } from '../../data/models/user';
-import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {tap} from 'rxjs';
+import {TokenResponse} from '../../data/models/tokenResponse';
 
 
 
@@ -9,40 +11,30 @@ import {Router} from '@angular/router';
 })
 export class AuthServiceService {
 
-  router = inject(Router)
+  private http = inject(HttpClient);
 
   loggedInUser = signal<User | null>(null);
-  isLoggedIn = computed(() => !!this.loggedInUser);
+  isLoggedIn = computed(() => !!this.loggedInUser());
 
   constructor() { }
 
   registerUser(user: User) {
-    /// Send to /api/register
-
-    /// Error-Response -> Reset Form, Error-Msg
-
-    /// Success-Response
-    /// Succes-msg?
-
-    /// Forward to Login:
-    this.router.navigate(['/auth/login']);
+    return this.http.post<User>(`/api/register`, user);
   }
 
   loginUser(user: User) {
-    /// Send to /api/login
-
-    /// Error-Response -> Reset form? Error-Msg
-
-    /// Success-Response
-    this.loggedInUser.set(user);
-    /// Switch to /dashboard
-    this.router.navigate(['/dashboard']);
-
+    return this.http.post<TokenResponse>(`/api/login`, user).pipe(
+      tap( response => {
+        this.loggedInUser.set(response.user);
+        localStorage.setItem('motp_auth_token', response.token);
+        }
+      )
+    )
   }
 
   logoutUser() {
+    localStorage.removeItem('motp_auth_token');
     this.loggedInUser.set(null);
-    /// Forward to Login? -> Router/Auth-Guard?
   }
 
 }

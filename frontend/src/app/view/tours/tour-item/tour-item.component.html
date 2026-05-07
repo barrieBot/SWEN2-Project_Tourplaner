@@ -1,6 +1,26 @@
 <div class="tour_item_card"
-  (click)="selectTour.emit(tourID)">
-  <h4>{{tourID}}</h4>
+     [routerLink]="['/dashboard/tour', tourID]"
+     routerLinkActive="is_active">
 
+  <div class="tour_header">
+    <h4 class="tour_title">{{tour()?.name}} </h4>
+    <p>:{{tourID}}</p>
+  </div>
+
+  <div class="tour_footer">
+    <div class="stat">
+      <span>dist: </span>
+      <span>{{tour()?.distance}}km</span>
+    </div>
+    <div class="stat">
+      <span>time: </span>
+      <span>{{tour()?.estimatedTime}}min</span>
+    </div>
+    <div class="stat">
+      <span>tp: </span>
+      <span>{{tour()?.transportType}}</span>
+    </div>
+
+  </div>
 
 </div>

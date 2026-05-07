@@ -1,6 +1,12 @@
 <div class="list_container">
   <header class="tours">
-
+    <div class="header_labels">
+      <h3>my tours</h3>
+      <p>{{tourManager.displayTourList().length}} tour{{tourManager.displayTourList().length!= 1 ? 's' : ''}} found</p>
+    </div>
+    <button
+      class="add_button"
+    >+</button>
   </header>
   <div class="scroll">
     @for (tour of tourManager.displayTourList(); track tour.id) {
@@ -10,5 +16,4 @@
       <div class="empty">No tours</div>
     }
   </div>
-
 </div>

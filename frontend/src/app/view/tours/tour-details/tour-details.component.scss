@@ -1,0 +1,60 @@
+.tour-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 16px;
+  border-bottom: 1px solid #e4e4e4;
+
+  h1{
+    margin-block: 10px;
+    padding: 0;
+  }
+
+}
+
+.action_bar {
+  display: flex;
+  gap: 16px;
+
+  button {
+    background: none;
+    border: none;
+  }
+  button:hover {
+    background: black;
+    color: white;
+  }
+}
+
+.tour-detail-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow-y: auto;
+}
+
+.tour-data {
+  padding-inline: 16px;
+  padding-bottom: 16px;
+}
+
+.tour-meta {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  padding-block: 6px;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.meta {
+  border-radius: 10px;
+  background: #b8b8b8;
+  margin: 0;
+  padding-block: 2px;
+  padding-inline: 16px;
+  text-align: center;
+}
+
+
+
+

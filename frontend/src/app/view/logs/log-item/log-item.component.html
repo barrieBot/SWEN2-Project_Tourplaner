@@ -1,1 +1,65 @@
-<p>log-item works!</p>
+<div class="log_item" [class.expanded]="isExpanded()">
+  <div class="log_shorthand" (click)="open.emit()">
+    <div class="meta">
+      <span>{{log().dateTime}}</span>
+      <span class="log_id">{{this.logID()}} </span>
+      @if (dirty()) {
+        <span class="unsaved_label">unsaved_changes</span>
+      }
+      <span>{{log().rating}}/5</span>
+    </div>
+
+    <div class="meta">
+      <span>{{log().totalTime}}min</span>
+      <span class="detail_toggle">{{isExpanded() ? '⇑' : '⇓'}}</span>
+    </div>
+  </div>
+
+  @if(isExpanded()){
+    <div class="log_details">
+      @if(isEditing()){
+        <div class="editor">
+          <div class="log_data_point">
+            <label for="">Rating: </label>
+            <input type="number" min="1" max="5" [(ngModel)]="editingBuffer()!.rating"/>
+          </div>
+
+          <div class="log_data_point">
+            <label for="">Total Time: </label>
+            <input type="number" [(ngModel)]="editingBuffer()!.totalTime"/>
+          </div>
+
+          <div class="log_data_point">
+            <label for="">Distance: </label>
+            <input type="number" [(ngModel)]="editingBuffer()!.totalDistance"/>
+          </div>
+
+          <div class="log_data_point">
+            <label for="">Comment: </label>
+            <textarea [(ngModel)]="editingBuffer()!.comment" placeholder="Comment on your tour..."></textarea>
+          </div>
+
+          <div class="actions">
+            <button
+              [disabled]="!dirty()"
+              (click)="saveEdits()">Save</button>
+            <button (click)="discardEdits()">Discard</button>
+          </div>
+
+        </div>
+
+      } @else {
+        <div class="comment">
+          <h3>Comment</h3>
+          <p class="log_comment">{{log().comment || 'No comment'}}</p>
+        </div>
+        <div class="actions">
+          <button (click)="openEditor()" >Edit</button>
+          <button (click)="deleteLog()" >Delete</button>
+        </div>
+
+      }
+    </div>
+  }
+
+</div>
