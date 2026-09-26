@@ -1,35 +1,34 @@
 -- Postgresql DB-Setup-Script
 
--- UUID Extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- Use docker-image postgis/postgis
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 
 CREATE TABLE u_users (
-	u_ID UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+	u_ID BIGSERIAL PRIMARY KEY,
 	u_USERNAME VARCHAR(50) UNIQUE not null,
 	u_EMAIL VARCHAR(100) UNIQUE not null,
 	u_PWD TEXT not null,
-	u_CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	u_CREATED_AT TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 
 CREATE TABLE geo_locations (
-	geo_ID UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+	geo_ID BIGSERIAL PRIMARY KEY,
 	geo_ADRESS TEXT,
 	geo_POSITION GEOGRAPHY(Point, 4326) not null
 );
 
 
+CREATE TYPE transport_type AS ENUM ('WALKING', 'CYCLING', 'DRIVING', 'PUBLIC')
+
 CREATE TABLE t_tours(
-	t_ID UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-	t_u_ID_owner UUID REFERENCES u_users(u_ID) ON DELETE cascade,
+	t_ID BIGSERIAL PRIMARY KEY,
+	t_u_ID_owner BIGINT REFERENCES u_users(u_ID) ON DELETE cascade,
 	t_NAME VARCHAR(255) not null,
 	t_DESCR TEXT,
 	-- Transport-type by enum? or Table?
-	t_TRANSPORT_TYPE VARCHAR(20) not null,
+	t_TRANSPORT_TYPE transport_type not null,
 
 	-- Directly saving ORS GeoJson-Response
 	t_ORS_ROUTEDATA JSONB,
@@ -41,34 +40,37 @@ CREATE TABLE t_tours(
 	  -- t_estimated_time ?
 	  -- t_popularity ?
 	  -- t_child_friendly ?
-	t_CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	t_CREATED_AT TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE tm_tour_milestones(
-	tm_t_ID UUID REFERENCES t_tours(t_ID) ON DELETE cascade,
-	tm_geo_ID_postion UUID REFERENCES geo_locations(geo_ID),
+	tm_t_ID BIGINT REFERENCES t_tours(t_ID) ON DELETE cascade,
+	tm_geo_ID_postion BIGINT REFERENCES geo_locations(geo_ID),
 	tm_INDEX_milestone INTEGER not null,
 	PRIMARY KEY (tm_t_ID, tm_INDEX_milestone)
 );
 
 
 CREATE TABLE l_logs(
-	l_ID UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-	l_t_ID UUID REFERENCES t_tours(t_ID) ON DELETE cascade,
-	l_TIMESTAMP TIMESTAMP not null,
+	l_ID BIGSERIAL PRIMARY KEY,
+	l_t_ID BIGINT NOT NULL REFERENCES t_tours(t_ID) ON DELETE cascade,
+	l_TIMESTAMP TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	l_COMMENT TEXT,
-	
+
 	-- Difficulty: How to measure this 1-5 1-10 Age?
-	l_DIFFICULTY INTEGER,
-	l_RATING INTEGER,
-	
+	l_DIFFICULTY SMALLINT CHECK (l_DIFFICULTY BETWEEN 1 AND 5)
+	l_RATING SMALLINT CHECK (l_RATING BETWEEN 1 AND 5),
+
 	-- Data-type integer/float? hmm...
 	t_DISTANCE INTEGER,
 
 	-- Optional: Geotaging the Log for Way-marks or something 
-	l_geo_ID_postion UUID REFERENCES location(geo_ID)
+	l_geo_ID_postion BIGINT REFERENCES geo_locations(geo_ID)
 );
 
+
+--Optional: Spatial Index for Proximity
+--CREATE INDEX idx_geo_locations_position on geo_locations USING GIST(geo_POSITION);
 
 
 --Optional: refresh-tokens? To persist login

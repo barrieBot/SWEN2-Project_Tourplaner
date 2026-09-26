@@ -1,0 +1,10 @@
+FROM postgis/postgis:16-3.4-alpine
+
+ENV POSTGRE_DB=tourDB \
+	POSTGRES_USER=postgres \
+	POSTGRES_PASSWORD=postgres
+
+
+COPY 01_scheme.sql /docker-entrypoint-initdb.d/01_scheme.sql
+
+#COPY 02_test_data.sql /docker-entrypoint-initdb.d/02_test_data.sql
