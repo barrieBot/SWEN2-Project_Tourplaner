@@ -17,6 +17,6 @@ public record TourResponse(
         Integer distance,
         Duration estimatedTime,
         Double popularity,
-        Double childFriendliness,
+        Double difficulty,
         List<LogResponse> logs
 ) {}

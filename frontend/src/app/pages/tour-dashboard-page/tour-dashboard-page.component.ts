@@ -1,9 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {TourListComponent} from '../../view/tours/tour-list/tour-list.component';
 import {MapComponent} from '../../view/base_components/map/map.component';
-import {TourDetailsComponent} from '../../view/tours/tour-details/tour-details.component';
 import {RouterOutlet} from '@angular/router';
-import {TourManagerService} from '../../service/tour/tour-manager.service';
+import {TourManager} from '../../viewmodel/tour/tour-manager';
 
 @Component({
   selector: 'app-tour-dashboard-page',
@@ -16,5 +15,6 @@ import {TourManagerService} from '../../service/tour/tour-manager.service';
   styleUrl: './tour-dashboard-page.component.scss'
 })
 export class TourDashboardPageComponent {
-  tours = inject(TourManagerService)
+  tours = inject(TourManager);
+
 }

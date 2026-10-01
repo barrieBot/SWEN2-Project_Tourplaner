@@ -2,17 +2,29 @@
   <h2>login:</h2>
 
   <div class="dialog_group">
-    <label>email:</label>
-    <input type="text" formControlName="email" placeholder="email">
+    <tui-textfield>
+      <label tuiLabel>Email or Username</label>
+      <input tuiInput type="text" formControlName="username" placeholder="YourUser123 or your@email.here">
+    </tui-textfield>
+    <tui-error
+      [formControl]="loginForm.controls.username"
+    />
+
   </div>
 
   <div class="dialog_group">
-    <label for="">pwd:</label>
-    <input type="password" formControlName="password" placeholder="*****">
+    <tui-textfield>
+      <label tuiLabel>Password</label>
+      <input tuiInput type="password" formControlName="password" placeholder="*****">
+      <tui-icon tuiPassword/>
+    </tui-textfield>
+    <tui-error
+      [formControl]="loginForm.controls.password"
+    />
   </div>
 
   <div class="login_actions">
-    <button class="submit" type="submit" [disabled]="loginForm.invalid">Submit</button>
-    <button class="switch_dialog" routerLink="/auth/register">register -></button>
+    <button tuiButton size="l" type="submit" [disabled]="loginForm.invalid">Submit</button>
+    <button tuiButton appearance="flat" size="l" routerLink="/auth/register">register -></button>
   </div>
 </form>

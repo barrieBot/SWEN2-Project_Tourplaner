@@ -23,7 +23,7 @@ public class Log {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "l_t_id", nullable = false)
-    private Tour tourId;
+    private Tour tour;
 
     @Column(name = "l_timestamp")
     private OffsetDateTime timeStamp;

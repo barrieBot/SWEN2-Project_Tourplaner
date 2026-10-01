@@ -4,20 +4,21 @@ package at.s_sal.tourplaner.service;
 import at.s_sal.tourplaner.dto.login.LoginRequest;
 import at.s_sal.tourplaner.dto.login.LoginResponse;
 import at.s_sal.tourplaner.dto.register.RegisterRequest;
-import at.s_sal.tourplaner.dto.register.RegisterResponse;
+import at.s_sal.tourplaner.dto.register.UserResponse;
 import at.s_sal.tourplaner.entity.User;
 import at.s_sal.tourplaner.helper.RequestResults;
 import at.s_sal.tourplaner.helper.type.IErrorCodes;
 import at.s_sal.tourplaner.repository.UserRepository;
 import at.s_sal.tourplaner.security.JwtService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AuthService {
@@ -27,7 +28,10 @@ public class AuthService {
     private final JwtService jwtService;
 
 
-    public RequestResults<RegisterResponse> registerUser(RegisterRequest registerRequest){
+    public RequestResults<UserResponse> registerUser(RegisterRequest registerRequest){
+
+        log.trace("Registration: {}", registerRequest.username());
+
         boolean usernameExists = userRepository.existsByUsername(registerRequest.username());
         boolean emailExists = userRepository.existsByEmail(registerRequest.email());
 
@@ -55,7 +59,7 @@ public class AuthService {
                 DataIntegrityViolationException.class,
                 IErrorCodes.USER_CREDENTIALS_TAKEN,
                 "Failed to register User: email/username taken"
-        ).map(savedUser -> new RegisterResponse(
+        ).map(savedUser -> new UserResponse(
                 savedUser.getId(),
                 savedUser.getUsername(),
                 savedUser.getEmail()
@@ -65,6 +69,9 @@ public class AuthService {
 
 
     public RequestResults<LoginResponse> loginUser(LoginRequest loginRequest){
+
+        log.trace("Login: {}", loginRequest.username());
+
         Optional<User> registeredUser = userRepository.findByUsernameOrEmail(
                 loginRequest.username(),
                 loginRequest.username()
@@ -80,8 +87,10 @@ public class AuthService {
                         RequestResults.success(
                             new LoginResponse(
                                     jwtService.generateToken(userEntity),
-                                    userEntity.getUsername(),
-                                    userEntity.getEmail()
+                                    new UserResponse(userEntity.getId(),
+                                            userEntity.getUsername(),
+                                            userEntity.getEmail()
+                                    )
                             )))
                 .orElseGet(() ->
                         RequestResults.failure(

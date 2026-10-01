@@ -8,24 +8,24 @@ import at.s_sal.tourplaner.helper.mapper.HttpErrorMapper;
 import at.s_sal.tourplaner.security.TokenHolder;
 import at.s_sal.tourplaner.service.TourService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tours")
+@Validated
+@AllArgsConstructor
 public class TourController {
 
     private final TourService tourService;
     private final HttpErrorMapper errorMapper;
 
-    public TourController(TourService tourService, HttpErrorMapper errorMapper) {
-        this.tourService = tourService;
-        this.errorMapper = errorMapper;
-    }
 
 
     @GetMapping
@@ -62,6 +62,7 @@ public class TourController {
         return tourService.updateTour(user.userID(), tourID, updatedTour).toResponseEntity(
                 HttpStatus.OK, errorMapper);
     }
+
 
     @DeleteMapping("/{tourID}")
     public ResponseEntity<?> deleteTourByID(

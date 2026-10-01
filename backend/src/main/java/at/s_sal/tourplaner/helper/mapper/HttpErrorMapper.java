@@ -24,6 +24,11 @@ public class HttpErrorMapper {
     ){
         String requestPath = request.getRequestURI();
         HttpStatus status = switch (internalError){
+            case INVALID_USER_CREDENTIAL, NO_PERMISSION_TO_ACCESS_RESOURCE -> HttpStatus.UNAUTHORIZED;
+            case USER_CREDENTIALS_TAKEN -> HttpStatus.BAD_REQUEST;
+            case TOUR_NOT_FOUND, LOG_NOT_FOUND, NO_RESOURCES_FOUND -> HttpStatus.NOT_FOUND;
+            case INTERNAL_SERVER_ERROR, EXTERNAL_API_ERROR -> HttpStatus.INTERNAL_SERVER_ERROR;
+
             default -> HttpStatus.INTERNAL_SERVER_ERROR;
         };
 

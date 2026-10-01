@@ -1,19 +1,48 @@
 <div class="list_container">
-  <header class="tours">
-    <div class="header_labels">
-      <h3>my tours</h3>
-      <p>{{tourManager.displayTourList().length}} tour{{tourManager.displayTourList().length!= 1 ? 's' : ''}} found</p>
+  <header class="list_header">
+
+    <div class="header_title">
+      <h3 class="tui-text-h6">my tours</h3>
+      <span tuiBadge
+        size="m"
+        appearance="neutral">{{tourManager.tourList().length}}</span>
     </div>
+    <br/>
     <button
-      class="add_button"
-    >+</button>
+      tuiButton
+      appearance="flat"
+      size="s"
+      iconEnd="@tui.plus"
+      routerLink="/dashboard/tour/new"></button>
+    <button
+      tuiButton
+      appearance="flat"
+      size="s"
+      iconEnd="@tui.refresh-cw"
+      (click)="tourManager.fetchUserTours()"></button>
+
   </header>
-  <div class="scroll">
-    @for (tour of tourManager.displayTourList(); track tour.id) {
-      <app-tour-item [tourID]="tour.id"
-      ></app-tour-item>
-    } @empty {
-      <div class="empty">No tours</div>
-    }
-  </div>
+
+  <tui-scrollbar class="list_scroll">
+    <div class="items_wrapper">
+      @for (tour of tourManager.tourList(); track tour.id) {
+        <app-tour-item [tourID]="tour.id"></app-tour-item>
+      } @empty {
+        <div class="empty">
+          <p class="tui-text_body-m">
+            No Tour found!
+          </p>
+          <button
+            tuiButton
+            appearance="flat"
+            size="s"
+            routerLink="/dashboard/tour/new">
+            Create your first tour!
+          </button>
+        </div>
+      }
+    </div>
+
+  </tui-scrollbar>
+
 </div>

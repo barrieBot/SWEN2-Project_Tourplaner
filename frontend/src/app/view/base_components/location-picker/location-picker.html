@@ -1,0 +1,182 @@
+<tui-loader [loading]="locationManager.isLoading()" [overlay]="true">
+  <div class="location-picker-container">
+    <div class="controls-panel">
+      <h3>Select Route Locations</h3>
+
+      <div class="transportType-row">
+        <label tuiLabel>Transport Type:
+          <tui-textfield>
+            <input
+              tuiSelect
+              [formControl]="selectedTransportType"
+              placeholder="Select transport type"
+            />
+            <tui-data-list-wrapper
+              *tuiDropdown
+              [items]="transportTypes"
+            />
+          </tui-textfield>
+        </label>
+      </div>
+
+      <div
+        class="location-row"
+        [class.active-picker]="activeLocationPicker() === 'from'"
+        [class.disabled]="locationManager.isLoading()"
+      >
+        <span class="label">Start Location</span>
+
+        <tui-textfield
+          tuiChevron
+          [stringify]="'address' | tuiStringify"
+          class="select-field"
+        >
+          <label tuiLabel>Choose saved location</label>
+
+          <input
+            tuiComboBox
+            [ngModel]="startLocation()"
+            (ngModelChange)="onSelectExisting($event, 'from')"
+            [disabled]="locationManager.isLoading()"
+          />
+
+          <tui-data-list-wrapper
+            *tuiDropdown
+            [itemContent]="'address' | tuiStringify | tuiStringifyContent"
+            [items]="locationManager.userLocations() | tuiFilterByInput"
+          />
+        </tui-textfield>
+
+        <button
+          tuiButton
+          type="button"
+          size="s"
+          [disabled]="locationManager.isLoading()"
+          [appearance]="activeLocationPicker() === 'from' ? 'primary' : 'outline'"
+          (click)="toggle('from')"
+        >
+          <tui-icon icon="@tui.map-pin"></tui-icon>
+          {{ activeLocationPicker() === 'from' ? 'Selecting...' : 'Pick on Map' }}
+        </button>
+
+        @if (startPreselection() && !startLocation()) {
+          <button
+            tuiButton
+            type="button"
+            size="s"
+            appearance="accent"
+            [disabled]="locationManager.isLoading()"
+            (click)="confirmPreselection('from')"
+          >
+            Confirm Location
+          </button>
+        }
+
+        @if (startLocation() || startPreselection()) {
+          <button
+            tuiButton
+            type="button"
+            size="s"
+            appearance="flat"
+            [disabled]="locationManager.isLoading()"
+            (click)="clearSelection('from')"
+          >
+            Clear
+          </button>
+        }
+      </div>
+
+      <div
+        class="location-row"
+        [class.active-picker]="activeLocationPicker() === 'to'"
+        [class.disabled]="locationManager.isLoading()"
+      >
+        <span class="label">End Location</span>
+
+        <tui-textfield
+          tuiChevron
+          [stringify]="'address' | tuiStringify"
+          class="select-field"
+        >
+          <label tuiLabel>Choose saved location</label>
+
+          <input
+            tuiComboBox
+            [ngModel]="endLocation()"
+            (ngModelChange)="onSelectExisting($event, 'to')"
+            [disabled]="locationManager.isLoading()"
+          />
+
+          <tui-data-list-wrapper
+            *tuiDropdown
+            [itemContent]="'address' | tuiStringify | tuiStringifyContent"
+            [items]="locationManager.userLocations() | tuiFilterByInput"
+          />
+        </tui-textfield>
+
+        <button
+          tuiButton
+          type="button"
+          size="s"
+          [disabled]="locationManager.isLoading()"
+          [appearance]="activeLocationPicker() === 'to' ? 'primary' : 'outline'"
+          (click)="toggle('to')"
+        >
+          <tui-icon icon="@tui.map-pin"></tui-icon>
+          {{ activeLocationPicker() === 'to' ? 'Selecting...' : 'Pick on Map' }}
+        </button>
+
+        @if (endPreselection() && !endLocation()) {
+          <button
+            tuiButton
+            type="button"
+            size="s"
+            appearance="accent"
+            [disabled]="locationManager.isLoading()"
+            (click)="confirmPreselection('to')"
+          >
+            Confirm Location
+          </button>
+        }
+
+        @if (endLocation() || endPreselection()) {
+          <button
+            tuiButton
+            type="button"
+            size="s"
+            appearance="flat"
+            [disabled]="locationManager.isLoading()"
+            (click)="clearSelection('to')"
+          >
+            Clear
+          </button>
+        }
+      </div>
+
+      <div class="action-row">
+        <button
+          tuiButton
+          type="button"
+          appearance="primary"
+          size="m"
+          [disabled]="!startLocation() || !endLocation() || locationManager.isLoading()"
+          (click)="confirmRoute()"
+        >
+          Fetch & Preview Route
+        </button>
+      </div>
+    </div>
+
+    <!-- MAP COMPONENT DISPLAY -->
+    <div class="map-wrapper">
+      <app-map
+        [startLocation]="startLocation()"
+        [endLocation]="endLocation()"
+        [startPreselectedLocation]="startPreselection()"
+        [endPreselectedLocation]="endPreselection()"
+        [transportType]="selectedTransportType.value"
+        (locationSelected)="onMapLocationSelection($event)"
+      ></app-map>
+    </div>
+  </div>
+</tui-loader>

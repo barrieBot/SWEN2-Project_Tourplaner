@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tour/{tourId}/logs")
+@RequestMapping("/api/tours/{tourId}/logs")
 @RequiredArgsConstructor
 @Validated
 public class LogController {
@@ -54,6 +54,7 @@ public class LogController {
     /// Logs always come via List by TourId
     /// Don't think I really need this
     /// Maybe for completeness
+
     @GetMapping("/{logID}")
     public ResponseEntity<?> getLogByID(
             @AuthenticationPrincipal TokenHolder User,

@@ -1,6 +1,14 @@
 export interface Location {
+  id: number;
   address: string;
-  lat?: number;
-  lng?: number;
+  longitude: number;
+  latitude: number;
 }
+
+export interface LocationGeoRequest {
+  longitude: number;
+  latitude: number;
+}
+
+
 

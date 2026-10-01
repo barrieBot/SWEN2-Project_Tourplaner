@@ -2,27 +2,52 @@
   <h2>register:</h2>
 
   <div class="dialog_group">
-    <label>username:</label>
-    <input type="text" formControlName="username" placeholder="username">
+    <tui-textfield>
+      <label tuiLabel>Username</label>
+      <input tuiInput type="text" formControlName="username" placeholder="TourMaker123">
+    </tui-textfield>
+    <tui-error
+      [formControl]="registerForm.controls.username"
+    />
   </div>
 
   <div class="dialog_group">
-    <label>email:</label>
-    <input type="text" formControlName="email" placeholder="email">
+    <tui-textfield>
+      <label tuiLabel>Email</label>
+      <input tuiInput type="email" formControlName="email" placeholder="your@email.here">
+    </tui-textfield>
+    <tui-error
+      [formControl]="registerForm.controls.email"
+    />
+  </div>
+
+
+  <div class="dialog_group">
+    <tui-textfield>
+      <label tuiLabel>Password</label>
+      <input tuiInput type="password" formControlName="password" placeholder="*****">
+      <tui-icon tuiPassword/>
+    </tui-textfield>
+    <tui-error
+      [formControl]="registerForm.controls.password"
+    />
   </div>
 
   <div class="dialog_group">
-    <label for="">pwd:</label>
-    <input type="password" formControlName="password" placeholder="*****">
-  </div>
-
-  <div class="dialog_group">
-    <label for="">confirm pwd:</label>
-    <input type="password" formControlName="password_confirm" placeholder="*****">
+    <tui-textfield>
+      <label tuiLabel>
+        Confirm Password
+      </label>
+      <input tuiInput type="password" formControlName="password_confirm" placeholder="*****">
+      <tui-icon tuiPassword/>
+    </tui-textfield>
+    <tui-error
+      [formControl]="registerForm.controls.password_confirm"
+    />
   </div>
 
   <div class="login_actions">
-    <button class="submit" type="submit">Submit</button>
-    <button class="switch_dialog" routerLink="/auth/login"><- login</button>
+    <button tuiButton size="l" [disabled]="registerForm.invalid" type="submit">Submit</button>
+    <button tuiButton appearance="flat" size="l" routerLink="/auth/login"><- login</button>
   </div>
 </form>

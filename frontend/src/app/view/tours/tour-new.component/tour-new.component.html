@@ -1,0 +1,84 @@
+<form [formGroup]="tourForm" (ngSubmit)="onSubmit()" class="tour-form-card">
+  <header tuiHeader>
+    <h2 tuiTitle>
+      Create New Tour
+    </h2>
+    <tui-tabs [(activeItemIndex)]="activeTab" class="form-tabs">
+      <button tuiTab type="button">Details</button>
+      <button tuiTab type="button">Map</button>
+    </tui-tabs>
+  </header>
+
+
+
+  <div class="form-fields">
+    @if (activeTab == 0) {
+      <div class="tap-layout">
+        <tui-textfield>
+          <label tuiLabel>Title</label>
+          <input placeholder="Tour-Title" tuiInput formControlName="name" />
+        </tui-textfield>
+
+        <tui-textfield>
+          <label tuiLabel>Description</label>
+          <textarea
+            placeholder="e.g., City Center Walk"
+            tuiTextarea
+            formControlName="description" ></textarea>
+          </tui-textfield>
+      </div>
+
+    } @else if (activeTab === 1){
+      <div class="tab-layout map-layout">
+        <app-location-picker
+          (confirmedRoute)="onRouteConfirmed($event)"
+        ></app-location-picker>
+      </div>
+    }
+
+  </div>
+
+  <footer class="form-footer">
+    <button
+      appearance="secondary"
+      tuiButton
+      type="button"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+
+    @if (activeTab === 1) {
+      <button
+        appearance="flat"
+        tuiButton
+        type="button"
+        (click)="setActiveTab(0)"
+      >
+        Back
+      </button>
+    }
+
+    @if(activeTab === 0){
+      <button
+        appearance="primary"
+        tuiButton
+        type="button"
+        (click)="setActiveTab(1)"
+      >
+        Next
+      </button>
+    } @else {
+      <button
+        tuiButton
+        type="submit"
+        [disabled]="tourForm.invalid"
+      >
+        Save Tour
+      </button>
+    }
+
+
+
+  </footer>
+</form>

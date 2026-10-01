@@ -1,35 +1,48 @@
-<div class="nav">
-  <div class="nav_wide">
-    <div class="nav_left logo" routerLink='/'>Tourplaner</div>
+<header tuiNavigationHeader>
 
-    <div class="nav_center">
-      <app-search-bar *ngIf="isHome" class="wide_screen_search"></app-search-bar>
-    </div>
+  <span tuiNavigationLogo>
+    <tui-icon icon="@tui.map"/>
+    <div tuiFade class="nav-logo">Tourplaner</div>
 
+  </span>
 
-    <div class="nav_right">
+  <tui-tabs>
+    <a
+      tuiTab
+      routerLink="/dashboard"
+      routerLinkActive="tui-tab_active"
+    >Dashboard</a>
 
-      <button *ngIf="isHome" class="action mobile_search_toggle">🔍</button>
+    <a
+      tuiTab
+      routerLink="/auth/login"
+      routerLinkActive="tui-tab_active"
+    >Login</a>
 
-      <ng-container *ngIf="isHome; else authButtons">
-        <button class="action add_tour"> + </button>
-        <span class="username">
-          hi {{auth.loggedInUser()?.username ?? 'user'}}
-        </span>
-      </ng-container>
+  </tui-tabs>
 
-      <ng-template #authButtons>
-        <button [routerLink]="authLink" class="action authButton">
+  <hr/>
+
+      @if (auth.loggedInUser()) {
+
+        <button
+          tuiButton
+          appearance="flat"
+          size="s" iconStart="@tui.plus"
+          routerLink="/dashboard/tour/new"
+        >New Tour</button>
+        <span class="user-label">
+            hi {{auth.loggedInUser()?.username ?? 'user'}}
+          </span>
+        <button tuiButton appearance="flat" size="s" iconStart="@tui.log-out" (click)="auth.logoutUser()">Logout</button>
+
+      } @else {
+
+        <button tuiButton [routerLink]="authLink" >
           {{authLabel}}
         </button>
-      </ng-template>
 
-    </div>
+      }
 
-  </div>
 
-  <div class="nav_second" *ngIf="isHome">
-    <app-search-bar *ngIf="isHome" class="narrow_screen_search"></app-search-bar>
-  </div>
-
-</div>
+</header>

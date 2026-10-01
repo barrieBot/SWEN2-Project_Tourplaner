@@ -1,15 +1,15 @@
+import { inject } from '@angular/core'
 import { HttpInterceptorFn } from '@angular/common/http';
+import { AuthServiceService } from '../../service/auth/auth-service.service'
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
-  /// Get token? local-store?
-  /// Inject a store-service?
-  const token = localStorage.getItem("motp_auth_token");
+  const authService = inject(AuthServiceService);
+  const token = authService.getToken();
 
-  /// Should I analyze the rest of the request as well?
-  /// Prob not necessary
 
   if (token) {
+    console.log('Sending request to:', req.url, 'with token:', token);
     const authorisedRequest = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
@@ -18,5 +18,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(authorisedRequest);
   }
 
+  console.log('Sending request to:', req.url, 'without Token');
   return next(req)
 }

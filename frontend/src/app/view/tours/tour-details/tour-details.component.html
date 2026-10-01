@@ -1,48 +1,129 @@
+@if (tour(); as item) {
+  <div class="detail_container">
 
-<div class="tour-detail-header">
-  <h1 class="tour-title">{{tour()!.name}}</h1>
-  <div class="action_bar">
-    <button (click)="edit()" >edit</button>
-    <button (click)="addLog()">+log</button>
-    <button (click)="deleteTour()">delete</button>
-    <button (click)="close()">x</button>
-  </div>
-</div>
-
-<div class="tour-detail-body">
-  <div class="tour-data">
-    <div class="tour-meta">
-      <div class="meta">
-        <span class="label">dist: </span>
-        <span class="value">{{tour()!.distance}}</span>
+    <!-- Top Action Header -->
+    <header class="detail_header">
+      <div class="header_title">
+        <h2 class="tui-text_h5">{{ item.name }}</h2>
+        <span tuiBadge size="s" appearance="accent">{{ item.transportType }}</span>
       </div>
 
-      <div class="meta">
-        <span class="label">time: </span>
-        <span class="value">{{tour()!.estimatedTime}}</span>
+      <div class="action_bar">
+        <button
+          tuiButton
+          appearance="secondary"
+          size="s"
+          iconEnd="@tui.pencil"
+          (click)="edit()">
+          Edit
+        </button>
+        <button
+          tuiButton
+          appearance="primary"
+          size="s"
+          iconEnd="@tui.plus"
+          (click)="addLog()">
+          Log
+        </button>
+        <button
+          tuiButton
+          appearance="flat"
+          size="s"
+          appearance="critical"
+          iconEnd="@tui.trash"
+          (click)="deleteTour()">
+          Delete
+        </button>
+        <button
+          tuiButton
+          appearance="icon"
+          size="s"
+          iconEnd="@tui.x"
+          (click)="close()"
+          title="Close details">
+        </button>
       </div>
+    </header>
 
-      <div class="meta">
-        <span class="label">difficulty: </span>
-        <span class="value">{{tour()!.childFriendliness}}</span>
+    <!-- Taiga Tabs -->
+    <tui-tabs
+      [activeItemIndex]="activeTabIndex()"
+      (activeItemIndexChange)="activeTabIndex.set($event)"
+      class="tabs_bar"
+    >
+      <button
+        tuiTab
+        [attr.data-active]="activeTabIndex() === 0"
+        (click)="activeTabIndex.set(0)"
+      >Overview & Route</button>
+      <button
+        tuiTab
+        [attr.data-active]="activeTabIndex() === 1"
+        (click)="activeTabIndex.set(1)"
+      >Logs</button>
+    </tui-tabs>
+
+    <!-- Scrollable Tab Body -->
+    <tui-scrollbar class="detail_scroll">
+      <div class="content_padding">
+
+        <!-- Tab 0: Overview & Map -->
+        @if (activeTabIndex() === 0) {
+          <!-- Map Box -->
+          <section class="section_block">
+            <h4 class="tui-text_h6">Route Map</h4>
+            <div class="map_wrapper">
+              <app-map
+                #detailMap
+                [startLocation]="item.startLocation"
+                [endLocation]="item.endLocation "
+                [interactive]="true">
+              </app-map>
+            </div>
+          </section>
+
+          <!-- Key Metrics Grid -->
+          <div class="metrics_grid">
+            <div class="metric_card">
+              <span class="metric_label tui-text_body-s">Route</span>
+              <span class="metric_value tui-text_body-m-bold">
+                {{ item.startLocation.address }} &rarr; {{ item.endLocation.address }}
+              </span>
+            </div>
+
+            <div class="metric_card">
+              <span class="metric_label tui-text_body-s">Difficulty</span>
+              <span
+                tuiBadge
+                size="s"
+                [appearance]="difficultyTag().appearance">
+                {{ difficultyTag().label }}
+              </span>
+            </div>
+
+            <div class="metric_card">
+              <span class="metric_label tui-text_body-s">Popularity</span>
+              <tui-rating
+                [(ngModel)]="item.popularity"
+                [readonly]="true" size="s"
+              ></tui-rating>
+            </div>
+          </div>
+
+          <!-- Description Section -->
+          <section class="section_block">
+            <h4 class="tui-text_h6">Description</h4>
+            <p class="tui-text_body-m description_text">{{ item.description }}</p>
+          </section>
+        }
+
+        <!-- Tab 1: Logs -->
+        @if (activeTabIndex() === 1) {
+          <app-log-list></app-log-list>
+        }
+
       </div>
+    </tui-scrollbar>
 
-    </div>
-
-    <div class="tour-descritpion">
-      <h3>Description</h3>
-      <p>{{tour()!.description}}</p>
-    </div>
   </div>
-
-  <div class="tour-logs">
-    <app-log-list/>
-  </div>
-
-</div>
-
-
-
-
-
-
+}

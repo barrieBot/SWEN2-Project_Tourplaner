@@ -11,11 +11,13 @@ import org.mapstruct.*;
 public interface TourMapper {
 
     @Mapping(target = "popularity", ignore = true)
-    @Mapping(target = "childFiendliness", ignore = true)
+    @Mapping(target = "difficulty", ignore = true)
     TourResponse toResponse(Tour tour);
 
 
-    TourResponse toResponse(Tour tour, Double popularity, Double childFriendliness);
+    @Mapping(target = "popularity", source = "popularity")
+    @Mapping(target = "difficulty", source = "difficulty")
+    TourResponse toComputedResponse(TourResponse tour, Double popularity, Double difficulty);
 
 
     @Mapping(target = "id", ignore = true)

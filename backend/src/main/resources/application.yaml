@@ -1,13 +1,13 @@
 spring:
   application:
     name: tourplaner
-  datasource:
-    url: JDBC:postgresql://localhost:5432/tourDB
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+  config:
+    import: optional:file:.env[.properties]
+  profiles:
+    active: ${SPRING_ACTIVE_PROFILE:dev}
+  mvc:
+    problemdetails:
+      enabled: true
+
+
+

@@ -4,18 +4,18 @@
     <app-map></app-map>
   </div>
 
-  <div class="dash_overlay">
+
+  <div class="dash_overlay" [class.has-active-detail]="tours.activeTourID() !== null">
     <aside class="tour_list">
-      <app-tour-list></app-tour-list>
+      <app-tour-list
+      ></app-tour-list>
     </aside>
 
-    @if (tours.isTourSelected()){
-      <section class="tour_view">
-        <router-outlet></router-outlet>
-      </section>
-    }
-  </div>
+    <section class="tour_view">
+      <router-outlet></router-outlet>
+    </section>
 
+  </div>
 </div>
 
 

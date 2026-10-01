@@ -17,9 +17,9 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "geo_id")
-    private long id;
+    private Long id;
 
-    @Column(name = "geo_address")
+    @Column(name = "geo_address", unique = true)
     private String address;
 
     @Column(name = "geo_position", nullable = false, columnDefinition = "Geography(Point, 4326)")

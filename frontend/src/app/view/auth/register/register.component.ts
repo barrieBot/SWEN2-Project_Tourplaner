@@ -3,12 +3,21 @@ import {Router, RouterLink} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthServiceService} from '../../../service/auth/auth-service.service';
 import {passwordsValidator} from '../../../helper/validators/passwordsValidator';
+import {TuiButton, TuiError, TuiIcon, TuiInput, TuiTextfield} from '@taiga-ui/core';
+import { TuiPassword } from '@taiga-ui/kit';
+
 
 @Component({
   selector: 'app-register',
   imports: [
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TuiButton,
+    TuiError,
+    TuiTextfield,
+    TuiPassword,
+    TuiInput,
+    TuiIcon
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -20,7 +29,7 @@ export class RegisterComponent {
 
   protected registerForm = this.form.group({
     email: ['', [Validators.required, Validators.email]],
-    username: ['', [Validators.required]],
+    username: ['', [Validators.required, Validators.minLength(8)]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     password_confirm: ['', [Validators.required]],
   }, {
@@ -44,11 +53,11 @@ export class RegisterComponent {
           this.router.navigate(['/auth/login']);
         },
         error: (err) => {
+          console.error(err);
           /// empty input-fields
           /// set error-msg/error-label
         }
       })
     }
   }
-
 }

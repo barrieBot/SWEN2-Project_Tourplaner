@@ -15,9 +15,11 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LogService {
@@ -34,6 +36,8 @@ public class LogService {
             @NotNull Long userId,
             @NotNull Long tourId) {
 
+        log.trace("fetch Logs: User: {}, Tour: {}", userId, tourId);
+
         return RequestResults.success(
                 logRepository.findAllByTourId(tourId).stream()
                         .map(logMapper::toResponse)
@@ -47,6 +51,8 @@ public class LogService {
             @NotNull Long userId,
             @NotNull Long tourId,
             @Valid LogPostRequest newLog) {
+
+        log.trace("New Log for: User: {}, Tour: {}", userId, tourId);
 
         return tourRepository.findById(tourId)
                 .map(tour -> {
@@ -68,6 +74,8 @@ public class LogService {
             @NotNull Long tourId,
             Long logID) {
 
+        log.trace("User: {}, Tour: {}, Log: {}", userId, tourId, logID);
+
         return logRepository.findByIdAndTourId(logID, tourId)
                 .map(logMapper::toResponse)
                 .map(RequestResults::success)
@@ -83,6 +91,8 @@ public class LogService {
             @NotNull Long tourId,
             Long logID,
             @Valid LogUpdateRequest updatedLog) {
+
+        log.trace("Update Log: User: {}, Tour: {}, Log: {}", userId, tourId, logID);
 
         Location location = locationService.retrieveLocationEntity(updatedLog.locationId());
 
@@ -108,6 +118,8 @@ public class LogService {
             @NotNull Long userId,
             @NotNull Long tourId,
             Long logID) {
+
+        log.trace("Delete Log: User: {}, Tour: {}, Log: {}", userId, tourId, logID);
 
         return logRepository.findByIdAndTourId(logID, tourId)
                 .map(log -> {

@@ -2,6 +2,7 @@ package at.s_sal.tourplaner.helper;
 
 import at.s_sal.tourplaner.helper.mapper.HttpErrorMapper;
 import at.s_sal.tourplaner.helper.type.IErrorCodes;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -11,6 +12,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+@Slf4j
 public record RequestResults<T>(
         Optional<T> data,
         Optional<IErrorCodes> error,
@@ -19,6 +21,9 @@ public record RequestResults<T>(
     public RequestResults {
         Objects.requireNonNull(data, "Error: Data missing");
     }
+
+
+
 
     public static <T> RequestResults<T> success(T data){
         return new RequestResults<>(Optional.ofNullable(data), Optional.empty(), null);
@@ -30,14 +35,18 @@ public record RequestResults<T>(
 
 
     public static <T> RequestResults<T> failure(IErrorCodes statusCode, String message){
+        log.warn("Request-Result failure: {} -> {}", statusCode, message);
         return new RequestResults<>(Optional.empty(), Optional.of(statusCode), message);
 
     }
 
     public static <T> RequestResults<T> failure(IErrorCodes statusCode){
+        log.warn("Request-Result failure: {}", statusCode);
         return new RequestResults<>(Optional.empty(), Optional.of(statusCode), null);
 
     }
+
+
 
 
     public ResponseEntity<?> toResponseEntity(
@@ -60,6 +69,7 @@ public record RequestResults<T>(
             return RequestResults.success(exe.get());
         } catch (Exception e){
             if(exceptionType.isInstance(e)){
+                log.error("Try-Execute failed: [{}] -> {} - {}", internalError, errorMsg, e.getMessage());
                 return RequestResults.failure(internalError, errorMsg);
             }
             throw (RuntimeException) e;
@@ -77,8 +87,8 @@ public record RequestResults<T>(
 
 
 
-
     //https://stackoverflow.com/questions/53755902/r-streamr-mapfunction-super-t-extends-r-mapper-stream
+
     public <R> RequestResults<R> map(
             Function<? super T, ? extends R> mapper
     ){

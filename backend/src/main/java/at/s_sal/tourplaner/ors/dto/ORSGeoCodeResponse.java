@@ -1,5 +1,9 @@
 package at.s_sal.tourplaner.ors.dto;
 
-public record ORSGeoCodeResponse (
+import java.util.List;
 
+public record ORSGeoCodeResponse (
+        List<ORSFeature> features
 ){}
+
+

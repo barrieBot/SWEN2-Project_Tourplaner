@@ -1,14 +1,30 @@
 <div class="log_table">
   <div class="log_header">
-    <h3>Logs</h3>
+    <h3 class="tui-text_h6">Logs</h3>
+    <span tuiBadge size="s" appearance="neutral">
+        {{ logManager.logList().length }}
+      </span>
     <div class="actions">
-      <button>+</button>
-      <button>⟲</button>
+      <button
+        tuiButton
+        appearance="flat"
+        iconStart="@tui.plus"
+        size="s"
+        (click)="addLog()"
+        title="Add Log"></button>
+      <button
+        tuiButton
+        appearance="flat"
+        iconStart="@tui.refresh-cw"
+        size="s"
+        (click)="refresh(1)"
+        title="Refresh Logs"
+      ></button>
     </div>
   </div>
 
   <div class="log_list">
-    @for (log of logList(); track log.id){
+    @for (log of logManager.logList(); track log.id){
       <app-log-item
         [logID]="log.id"
         [isExpanded]="openedLogItem() === log.id"

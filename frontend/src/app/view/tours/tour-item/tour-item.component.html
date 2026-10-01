@@ -1,26 +1,47 @@
-<div class="tour_item_card"
-     [routerLink]="['/dashboard/tour', tourID]"
-     routerLinkActive="is_active">
+@if (tour(); as item){
+  <div
+    tuiCardLarge
+    class="tour_card"
+    [routerLink]="['/dashboard/tour', tourID ]"
+    (click)="this.tourManager.setSelectedTour(tourID??null)"
+    routerLinkActive="is_active">
 
-  <div class="tour_header">
-    <h4 class="tour_title">{{tour()?.name}} </h4>
-    <p>:{{tourID}}</p>
+    <div class="tour_header">
+      <div class="title">
+        <h4 class="tui-text_h6">{{item.name}}</h4>
+        <p>:{{tourID}}</p>
+        <!--- maybe a ... menu for Delete/Edit---->
+      </div>
+
+      <!----maybe icons for the individual transport-types----->
+      <span tuiBadge size="s" appearance="accent">
+        {{item.transportType}}
+      </span>
+
+    </div>
+
+    <div class="tour_footer">
+
+      <!--- maybe some alternative when difficulty is 0/null---->
+      <div class="tour_metrics">
+        <span tuiBadge
+              size="m"
+              [appearance]="difficultyTag().appearance">
+          {{difficultyTag().label}}
+        </span>
+
+
+      </div>
+
+      <!--- maybe some alternative when popularity is 0/null---->
+      <div class="rating_wrapper" title="{{item.popularity}}/5">
+        <tui-rating
+          [(ngModel)]="item.popularity"
+          [readonly]="true"
+          size="xs"
+        ></tui-rating>
+      </div>
+    </div>
+
   </div>
-
-  <div class="tour_footer">
-    <div class="stat">
-      <span>dist: </span>
-      <span>{{tour()?.distance}}km</span>
-    </div>
-    <div class="stat">
-      <span>time: </span>
-      <span>{{tour()?.estimatedTime}}min</span>
-    </div>
-    <div class="stat">
-      <span>tp: </span>
-      <span>{{tour()?.transportType}}</span>
-    </div>
-
-  </div>
-
-</div>
+}

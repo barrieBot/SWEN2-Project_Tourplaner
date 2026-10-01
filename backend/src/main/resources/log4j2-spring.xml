@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Appenders>
+
+        <Console name="Console"
+                 target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <File
+                name           ="TourLogFile"
+                fileName       ="logs/tourplaner.log"
+                immediateFlush ="false"
+                append         ="false">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="TourLogFile"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
+
+        <!--
+        Source - https://stackoverflow.com/a/21206994
+        Posted by Thorsten Niehues, modified by community. See post 'Timeline' for change history
+        Retrieved 2026-09-30, License - CC BY-SA 4.0
+        -->

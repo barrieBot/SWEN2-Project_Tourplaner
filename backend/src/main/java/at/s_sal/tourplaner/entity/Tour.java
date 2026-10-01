@@ -1,5 +1,6 @@
 package at.s_sal.tourplaner.entity;
 
+import at.s_sal.tourplaner.helper.type.TransportType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;

@@ -1,6 +1,6 @@
 package at.s_sal.tourplaner.dto.register;
 
-public record RegisterResponse(
+public record UserResponse(
         Long ID,
         String username,
         String email

@@ -1,1 +1,66 @@
-<p>log-editor works!</p>
+<form [formGroup]="logForm" (ngSubmit)="onSubmit()" class="log-modal-form">
+  <header class="modal-header">
+    <h3 tuiTitle>{{ isEditMode ? 'Edit Tour Log' : 'Create New Tour Log' }}</h3>
+  </header>
+
+  <div class="modal-body">
+    <tui-textfield>
+      <label tuiLabel>Comment / Notes</label>
+      <textarea
+        tuiTextarea
+        placeholder="How was your tour? Describe the conditions, experience, etc."
+        formControlName="comment"
+      ></textarea>
+    </tui-textfield>
+
+
+    <div class="form-row">
+      <label tuiLabel class="field-label">Difficulty (1 - 10)</label>
+      <tui-textfield>
+        <input
+          tuiSelect
+          formControlName="difficulty"
+          placeholder="Select difficulty"
+        />
+        <tui-data-list-wrapper
+          *tuiDropdown
+          [items]="difficultyOptions"
+        ></tui-data-list-wrapper>
+      </tui-textfield>
+    </div>
+
+
+    <div class="form-row rating-row">
+      <label tuiLabel class="field-label">Rating</label>
+      <div class="rating-picker">
+        <tui-rating
+          formControlName="rating"
+          [max]="5"
+          size="m"
+        ></tui-rating>
+        <span class="rating-value">{{ logForm.value.rating }} / 5</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="modal-footer">
+    <button
+      tuiButton
+      appearance="secondary"
+      type="button"
+      size="m"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      tuiButton
+      appearance="primary"
+      type="submit"
+      size="m"
+      [disabled]="logForm.invalid"
+    >
+      {{ isEditMode ? 'Update Log' : 'Save Log' }}
+    </button>
+  </footer>
+</form>

@@ -1,65 +1,52 @@
-<div class="log_item" [class.expanded]="isExpanded()">
-  <div class="log_shorthand" (click)="open.emit()">
-    <div class="meta">
-      <span>{{log().dateTime}}</span>
-      <span class="log_id">{{this.logID()}} </span>
-      @if (dirty()) {
-        <span class="unsaved_label">unsaved_changes</span>
-      }
-      <span>{{log().rating}}/5</span>
-    </div>
+@if (log(); as item) {
+  <div class="log_item" [class.expanded]="isExpanded()">
+    <button type="button" class="log_shorthand" (click)="open.emit()">
+      <div class="meta_left">
+        <span class="tui-text_body-m-bold">{{ item.dateTime }}</span>
+        <span class="log_id">#{{ logID() }}</span>
+        <tui-rating
+          [ngModel]="item.rating"
+          [readOnly]="true"
+          size="s"
+        ></tui-rating>
+      </div>
 
-    <div class="meta">
-      <span>{{log().totalTime}}min</span>
-      <span class="detail_toggle">{{isExpanded() ? '⇑' : '⇓'}}</span>
-    </div>
-  </div>
+      <div class="meta_right">
+        <span tuiBadge size="s" [appearance]="difficultyTag().appearance">
+          {{ difficultyTag().label }}
+        </span>
+        <tui-icon
+          icon="@tui.chevron-down"
+          class="chevron"
+          [class.rotated]="isExpanded()"
+        ></tui-icon>
+      </div>
+    </button>
 
-  @if(isExpanded()){
-    <div class="log_details">
-      @if(isEditing()){
-        <div class="editor">
-          <div class="log_data_point">
-            <label for="">Rating: </label>
-            <input type="number" min="1" max="5" [(ngModel)]="editingBuffer()!.rating"/>
-          </div>
-
-          <div class="log_data_point">
-            <label for="">Total Time: </label>
-            <input type="number" [(ngModel)]="editingBuffer()!.totalTime"/>
-          </div>
-
-          <div class="log_data_point">
-            <label for="">Distance: </label>
-            <input type="number" [(ngModel)]="editingBuffer()!.totalDistance"/>
-          </div>
-
-          <div class="log_data_point">
-            <label for="">Comment: </label>
-            <textarea [(ngModel)]="editingBuffer()!.comment" placeholder="Comment on your tour..."></textarea>
-          </div>
-
-          <div class="actions">
-            <button
-              [disabled]="!dirty()"
-              (click)="saveEdits()">Save</button>
-            <button (click)="discardEdits()">Discard</button>
-          </div>
-
-        </div>
-
-      } @else {
-        <div class="comment">
-          <h3>Comment</h3>
-          <p class="log_comment">{{log().comment || 'No comment'}}</p>
-        </div>
+    <tui-expand [expanded]="isExpanded()">
+      <div class="log_details read_mode">
+        <p class="tui-text_body-m comment_text">{{ item.comment || 'No comment provided.' }}</p>
         <div class="actions">
-          <button (click)="openEditor()" >Edit</button>
-          <button (click)="deleteLog()" >Delete</button>
+          <button
+            tuiButton
+            appearance="secondary"
+            size="s"
+            iconStart="@tui.pencil"
+            (click)="openEditor()"
+          >
+            Edit
+          </button>
+          <button
+            tuiButton
+            appearance="critical"
+            size="s"
+            iconStart="@tui.trash"
+            (click)="deleteLog(item.id)"
+          >
+            Delete
+          </button>
         </div>
-
-      }
-    </div>
-  }
-
-</div>
+      </div>
+    </tui-expand>
+  </div>
+}

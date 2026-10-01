@@ -1,7 +1,5 @@
 export enum TransportType{
-  BIKE = 'BIKE',
-  HIKE = 'HIKE',
-  RUN = 'RUN',
-  VACATION = 'VACATION',
-  PUBLIX = 'PUBLIX',
+  FOOT_WALKING = 'FOOT_WALKING',
+  CYCLING_REGULAR = 'CYCLING_REGULAR',
+  DRIVING_CAR = 'DRIVING_CAR'
 }

@@ -6,14 +6,15 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum TransportType {
-    DRIVING_CAR("driving_car"),
-    DRIVING_HGV("driving_hgv"),
-    CYCLING_REGULAR("cycling_regular"),
-    CYCLING_MOUNTAIN("cycling_mountain"),
-    CYCLING_ROAD("cycling_road"),
-    FOOT_HIKING("foot_hiking"),
-    FOOT_WALKING("foot_walking"),
+    DRIVING_CAR("driving-car"),
+    DRIVING_HGV("driving-hgv"),
+    CYCLING_REGULAR("cycling-regular"),
+    CYCLING_MOUNTAIN("cycling-mountain"),
+    CYCLING_ROAD("cycling-road"),
+    FOOT_HIKING("foot-hiking"),
+    FOOT_WALKING("foot-walking"),
     WHEELCHAIR("wheelchair");
 
     private final String orsProfile;
+
 }

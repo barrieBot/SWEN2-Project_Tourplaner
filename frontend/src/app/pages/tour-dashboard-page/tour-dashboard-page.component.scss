@@ -12,52 +12,40 @@
   overflow: hidden;
 }
 
-
 .map_background {
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
   inset: 0;
   z-index: 1;
 }
 
 .dash_overlay {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 20px;
   z-index: 10;
-  height: 100%;
-  width: 100%;
   pointer-events: none;
   display: flex;
-  padding: 20px;
+  gap: 20px;
 }
-
 
 .tour_list {
-  width: 300px;
-  margin: 20px;
+  width: 320px;
   pointer-events: auto;
-  border: 1px solid black;
+  border: 1px solid var(--tui-border-normal, black);
   display: flex;
   flex-direction: column;
-  background: #f1f1f1;
+  background: var(--tui-background-base, #f1f1f1);
+  border-radius: var(--tui-radius-l, 12px);
+  box-shadow: var(--tui-shadow-medium);
 }
-
 
 .tour_view {
+  flex: 1;
   pointer-events: auto;
-  position: absolute;
-  bottom: 40px;
-  right: 50px;
   z-index: 25;
-  height: 80%;
-  width: 800px;
-  border: 1px solid black;
+  border: 1px solid var(--tui-border-normal, black);
   display: flex;
   flex-direction: column;
-  background: #f1f1f1;
+  background: var(--tui-background-base, #f1f1f1);
+  border-radius: var(--tui-radius-l, 12px);
+  box-shadow: var(--tui-shadow-medium);
 }
-

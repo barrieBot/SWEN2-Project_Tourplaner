@@ -1,8 +1,8 @@
 package at.s_sal.tourplaner.config;
 
+import at.s_sal.tourplaner.config.securityProperty.CorsSecurityProperties;
 import at.s_sal.tourplaner.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +29,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final CorsSecurityProperties corsSecurityProperties;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,7 +39,7 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/auth/**", "/swagger-ui/*").permitAll()
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -62,7 +63,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration conf = new CorsConfiguration();
 
-        conf.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        conf.setAllowedOrigins(corsSecurityProperties.corsAllowedOrigins());
+        conf.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         conf.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         conf.setAllowCredentials(true);
 

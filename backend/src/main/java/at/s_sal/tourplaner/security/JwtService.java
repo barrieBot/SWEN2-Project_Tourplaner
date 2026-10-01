@@ -32,7 +32,9 @@ public class JwtService {
                     .parseSignedClaims(token)
                     .getPayload();
 
-            return Optional.of(new TokenHolder(claims.get("uid", Long.class), claims.getSubject()));
+            Number uid_number = claims.get("uid", Number.class);
+            Long uid = uid_number != null ? uid_number.longValue() : null;
+            return Optional.of(new TokenHolder(uid, claims.getSubject()));
         } catch (JwtException | IllegalArgumentException e) {
             return Optional.empty();
         }
@@ -44,7 +46,7 @@ public class JwtService {
                 .subject(user.getEmail())
                 .claim("uid", user.getId())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + jwtSecrets.jwtExpirationMS()))
+                .expiration(new Date(System.currentTimeMillis() + jwtSecrets.jwtExpirationMs()))
                 .signWith(signWithKey())
                 .compact();
     }

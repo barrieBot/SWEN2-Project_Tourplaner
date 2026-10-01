@@ -1,3 +1,5 @@
+import { provideTaiga } from "@taiga-ui/core";
+import { provideAnimations } from '@angular/platform-browser/animations'
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import {provideRouter, withComponentInputBinding, withRouterConfig} from '@angular/router';
 
@@ -10,6 +12,8 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding(),
       withRouterConfig({paramsInheritanceStrategy: "always"})),
-    provideHttpClient(withInterceptors(([authInterceptor])))
-  ]
+    provideHttpClient(withInterceptors(([authInterceptor]))),
+        provideTaiga(),
+    provideAnimations(),
+    ]
 };

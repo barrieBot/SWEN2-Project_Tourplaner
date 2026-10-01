@@ -27,8 +27,8 @@ public interface LocationMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "address", source = "address")
-    @Mapping(target = "position", source = "location", qualifiedByName = "getPointFromCoordinates")
-    Location toEntity(LocationGeoRequest location, String address);
+    @Mapping(target = "position", source = "request", qualifiedByName = "getPointFromCoordinates")
+    Location toEntity(LocationGeoRequest request, String address);
 
 
 
