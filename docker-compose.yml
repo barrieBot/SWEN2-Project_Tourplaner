@@ -11,17 +11,13 @@ services:
       - "${DB_PORT}:5432"
     networks:
       - tp-network
-    volumes:
-      - ./database/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
-      - ./database/02_data.sql:/docker-entrypoint-initdb.d/02_data.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 5s
       timeout: 5s
       retries: 5
-  
 
-  backend: 
+  backend:
     build: ./backend
     container_name: tourplaner_api
     depends_on:
@@ -34,6 +30,10 @@ services:
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PWD}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
+      ORS_BASE_URL: ${ORS_BASE_URL}
+      ORS_API_TOKEN: ${ORS_API_TOKEN}
 
 
   frontend:
@@ -50,4 +50,4 @@ services:
 networks:
   tp-network:
     driver: bridge
-    
+

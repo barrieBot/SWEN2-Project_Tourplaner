@@ -1,11 +1,12 @@
 #https://medium.com/@fabiozuin/build-once-deploy-anywhere-with-angular-17-bf477c49668f
 
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 
 WORKDIR /app
 COPY package*.json ./
+RUN npm ci
+
 COPY . .
-RUN npm install
 RUN npm run build -- --configuration=production
 
 FROM nginx:stable-alpine
