@@ -1,4 +1,4 @@
-import {Component, effect, inject, output, signal} from '@angular/core';
+import {Component, effect, inject, output, signal, input, OnInit} from '@angular/core';
 import {LocationManager} from '../../../viewmodel/location/location-manager';
 import {Location, LocationGeoRequest} from '../../../data/models/location';
 import {LatLng} from 'leaflet';
@@ -39,10 +39,15 @@ type ActiveLocationPicker = "from" | "to" | null;
   styleUrl: './location-picker.scss',
   templateUrl: './location-picker.html',
 })
-export class LocationPicker {
+export class LocationPicker{
   readonly locationManager = inject(LocationManager);
   readonly activeLocationPicker = signal<ActiveLocationPicker>(null);
   private pendingLocationRequestPicker = signal<ActiveLocationPicker>(null);
+
+  readonly initStartLocation = input<Location | null>(null);
+  readonly initEndLocation = input<Location | null>(null);
+  readonly initTransportType = input<TransportType | null>(null);
+
 
   readonly startLocation = signal<Location | null>(null);
   readonly startPreselection = signal<LocationGeoRequest | null>(null);
@@ -63,6 +68,19 @@ export class LocationPicker {
     this.locationManager.fetchUserLocations();
 
     effect(() => {
+
+      const start = this.initStartLocation();
+      const end = this.initEndLocation();
+      const transportType = this.initTransportType();
+
+      if(start){this.startLocation.set(start);}
+      if(end){ this.endLocation.set(end);}
+      if(transportType){ this.selectedTransportType.setValue(transportType); }
+
+    });
+
+
+    effect(() => {
       const resolvedAddressLookup = this.locationManager.geoResolvedLocation();
       const resolverTarget = this.pendingLocationRequestPicker();
 
@@ -80,6 +98,7 @@ export class LocationPicker {
   }
 
 
+
   toggle(target: 'from' | 'to') {
     const setPickerState: ActiveLocationPicker = this.activeLocationPicker() === target ? null : target;
     this.activeLocationPicker.set(setPickerState);
@@ -93,8 +112,10 @@ export class LocationPicker {
     }
     const geoRequest = {latitude: coords.lat, longitude: coords.lng};
     if(target == 'from') {
+      this.startLocation.set(null);
       this.startPreselection.set(geoRequest);
     } else if(target == 'to') {
+      this.endLocation.set(null);
       this.endPreselection.set(geoRequest);
     }
     this.activeLocationPicker.set(null)

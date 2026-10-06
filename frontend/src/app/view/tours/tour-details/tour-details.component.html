@@ -5,18 +5,18 @@
     <header class="detail_header">
       <div class="header_title">
         <h2 class="tui-text_h5">{{ item.name }}</h2>
+        <button
+          tuiButton
+          appearance="flat"
+          size="xs"
+          iconStart="@tui.pencil"
+          (click)="openTitleEditModal()"
+          title="edit title"
+        ></button>
         <span tuiBadge size="s" appearance="accent">{{ item.transportType }}</span>
       </div>
 
       <div class="action_bar">
-        <button
-          tuiButton
-          appearance="secondary"
-          size="s"
-          iconEnd="@tui.pencil"
-          (click)="edit()">
-          Edit
-        </button>
         <button
           tuiButton
           appearance="primary"
@@ -29,7 +29,6 @@
           tuiButton
           appearance="flat"
           size="s"
-          appearance="critical"
           iconEnd="@tui.trash"
           (click)="deleteTour()">
           Delete
@@ -71,7 +70,18 @@
         @if (activeTabIndex() === 0) {
           <!-- Map Box -->
           <section class="section_block">
+          <div class="header_subtitle">
             <h4 class="tui-text_h6">Route Map</h4>
+            <button
+              tuiButton
+              appearance="flat"
+              size="xs"
+              iconStart="@tui.pencil"
+              (click)="openRouteEditModal()"
+              title="edit description"
+            ></button>
+
+          </div>
             <div class="map_wrapper">
               <app-map
                 #detailMap
@@ -112,7 +122,17 @@
 
           <!-- Description Section -->
           <section class="section_block">
+          <div class="header_subtitle">
             <h4 class="tui-text_h6">Description</h4>
+            <button
+              tuiButton
+              appearance="flat"
+              size="xs"
+              iconStart="@tui.pencil"
+              (click)="openDescriptionEditModal()"
+              title="edit description"
+            ></button>
+          </div>
             <p class="tui-text_body-m description_text">{{ item.description }}</p>
           </section>
         }
@@ -126,4 +146,57 @@
     </tui-scrollbar>
 
   </div>
+
+  @if(editingModalActive() === 'title'){
+    <div class="modal" (click)="closeModal()" >
+      <div class="card" (click)="$event.stopPropagation()">
+        <h3>Edit Title</h3>
+        <tui-textfield>
+          <label tuiLabel>Title</label>
+          <input tuiInput [formControl]="titleModal" />
+        </tui-textfield>
+        <div class="modal_actions">
+          <button tuiButton appearance="secondary" type="button" (click)="closeModal()" >Cancel</button>
+          <button tuiButton appearance="primary" type="button" (click)="saveTitleUpdate()" [disabled]="titleModal.invalid" >Save</button>
+        </div>
+      </div>
+    </div>
+  }
+
+
+  @if(editingModalActive() === 'description'){
+    <div class="modal" (click)="closeModal()" >
+      <div class="card" (click)="$event.stopPropagation()">
+        <h3>Edit Description</h3>
+        <tui-textfield>
+          <label tuiLabel>Description</label>
+          <input tuiInput [formControl]="descriptionModal" />
+        </tui-textfield>
+        <div class="modal_actions">
+          <button tuiButton appearance="secondary" type="button" (click)="closeModal()" >Cancel</button>
+          <button tuiButton appearance="primary" type="button" (click)="saveDescriptionUpdate()" [disabled]="descriptionModal.invalid" >Save</button>
+        </div>
+      </div>
+    </div>
+  }
+
+
+
+  @if(editingModalActive() === 'route'){
+    <div class="modal" (click)="closeModal()" >
+      <div class="card route" (click)="$event.stopPropagation()">
+        <h3>Edit Description</h3>
+        <app-location-picker
+          (confirmedRoute)="onRouteConfirmed($event)"
+          [initStartLocation]="item.startLocation"
+          [initEndLocation]="item.endLocation"
+          [initTransportType]="item.transportType"
+        >
+        </app-location-picker>
+        <div class="modal_actions">
+          <button tuiButton appearance="secondary" type="button" (click)="closeModal()" >Cancel</button>
+        </div>
+      </div>
+    </div>
+  }
 }

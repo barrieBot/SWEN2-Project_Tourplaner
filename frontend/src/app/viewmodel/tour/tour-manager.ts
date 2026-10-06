@@ -79,11 +79,14 @@ export class TourManager {
 
   updateTour(id: number, tourUpdate: TourUpdate): void {
     this.tourService.updateTour(id, tourUpdate).subscribe({
-      next: (updatedTour) =>
+      next: (updatedTour) => {
         this.tourList.update(tours =>
           tours.map(t => t.id === id ? updatedTour : t)
-        ),
-      error: error => console.log(error)
+        );
+      },
+      error: error => {
+        console.log(error);
+      }
     })
   }
 

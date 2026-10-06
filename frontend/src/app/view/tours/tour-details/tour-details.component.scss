@@ -37,6 +37,13 @@
   }
 }
 
+
+.header_subtitle{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .tabs_bar {
   padding: 0 1.5rem;
   border-bottom: 1px solid var(--tui-base-03);
@@ -99,3 +106,48 @@
   line-height: 1.6;
   margin: 0;
 }
+
+
+.modal {
+  background: rgba(0, 0, 0, 0.3);
+  position:fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+
+.card {
+  background: var(--tui-base-01, #ffffff);
+  padding: 1.5rem;
+  border-radius: var(--tui-radius-m);
+
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &.route{
+    max-width: 800px;
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+}
+
+.modal_actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+
+

@@ -30,6 +30,6 @@ export interface TourUpdate {
   name?: string;
   description?: string;
   transportType?: TransportType;
-  startLocation?: number;
-  endLocation?: number;
+  startLocationId?: number;
+  endLocationId?: number;
 }
